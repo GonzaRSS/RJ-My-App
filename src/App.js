@@ -1,19 +1,40 @@
-import {ItemListCointainer} from './itemList/ItemListContainer'
-import { MainContent } from './components/MainContent'
-import { Encabezado } from './components/Encabezado'
+import { ItemListCointainer } from './components/itemListContainer/ItemListContainer'
+import { NavBar } from './components/NavBar/NavBar';
+import { Nosotros } from './components/NavBar/Nosotros'
+import { Contacto } from './components/NavBar/Contacto'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './estilos.css'
-import { NavBar } from './NavBar/NavBar';
+import { BrowserRouter, Routes } from 'react-router-dom'
+import { ItemDetailContainer } from './components/itemDetailContainer/ItemDetailContainer';
+import { Cartprovider } from './context/CartContext'
+import { Cart } from './components/Cart/Cart';
+
+
+
 function App() {
 
+ 
+
   return (
-    <div>
-      <NavBar/>
-        <ItemListCointainer greeting={"hola!!"}/> 
-        <Encabezado/>  
-        <MainContent/>
-    </div>
-    
+    <Cartprovider>
+      <BrowserRouter>
+
+        <NavBar />
+
+
+        <Routes>
+          <Route path="/" element={<ItemListCointainer />} />
+          <Route path='/Productos/:catId' element={<ItemListCointainer />} />
+          <Route path='/detail/:itemId' element={<ItemDetailContainer />} />
+          <Route path="/Nosotros" element={<Nosotros />} />
+          <Route path="/Contacto" element={<Contacto />} />
+          <Route path='/cart' element={<Cart />} />
+        </Routes>
+
+      </BrowserRouter>
+      </Cartprovider>
   );
 }
 
 export default App;
+
