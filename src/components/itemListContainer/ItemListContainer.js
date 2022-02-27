@@ -1,51 +1,48 @@
-import './ItemListCointainer.css'
-import { Producto } from '../../ejemplos/producto'
-import { Button } from 'react-bootstrap'
-import { useContext, useEffect, useState } from 'react'
-import { pedirDatos } from '../../helpers/pedirDatos'
-import { itemList } from '../itemList/itemList'
+import { useEffect, useState } from "react"
+import { ItemList } from "./itemList/itemList"
 import { useParams } from 'react-router-dom'
-import { MiContext } from '../../context/CartContext'
+import { db } from "../../firebase/config"
+import { collection, getDocs, query, where } from "firebase/firestore"
 
+ 
+export const ItemListContainer = () => {
 
-export const ItemListCointainer = () => {
-
-    const contexto = useContext(MiContext)
-    console.log(contexto.user);
-    console.log(contexto.admin);
-
+    
     const [productos, setProductos] = useState([])
+    const [loading, setLoading] = useState(false)
 
-    const { catId } = useParams()
-    console.log(params.catId)
+    const {catId} = useParams()
 
-    console.log(stock.map((el) => {
-        return {
-            nombre: el.nombre,
-            precio: el.precio,
-        }
-    })); //hace un mapeo y toma el nombre solmente del obj
+    useEffect( () => {
+        setLoading(true)
 
-    useEffect(() => {
-        pedirDatos()
-            .then((res) => {
-                if (catId) {
-                    setProductos(res.filter((el) => el.categoria === catId));
-                }
-                else { setProductos(res) }
+        // 1.- armar referencia
+        const productosRef = collection(db, 'productos')
+        const q = catId ? query(productosRef, where("categoria", "==", catId)) : productosRef
+        // 2.- pedir esa ref
+        getDocs(q)
+            .then((resp) => {
+                setProductos( resp.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data()
+                    }
+                }))
             })
-
-            .catch((err) => {
-                console.log(err)
-            })
-
             .finally(() => {
-                console.log("proceso finalizado")
+                setLoading(false)
             })
-    }, [])
 
-    return (<>
-        <ItemList productos={productos} />
-    </>
+    }, [catId])
+
+
+    return (
+        <>
+            {
+                loading 
+                    ? <h2>Loading...</h2> 
+                    : <ItemList productos={productos}/>
+            } 
+        </>
     )
 }

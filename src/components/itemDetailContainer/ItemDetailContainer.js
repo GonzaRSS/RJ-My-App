@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { pedirDatos } from "../../helpers/pedirDatos";
 import { useParams } from "react-router-dom";
-import { itemDetail } from "../itemDetail/itemDetail";
+
 
 export const ItemDetailContainer = () => {
     const [loading, setLoading] = useState(false)

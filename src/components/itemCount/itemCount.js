@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react"
+import { configBtns } from "./configBtns"
 
 
-
-export const itemCount = ({ max, min = 0, counter, setCounter }) => {
+export const ItemCount = ({max, min = 0, counter, setCounter}) => {
 
     const handleSumar = (e) => {
-        e.stopPropagation()
         counter < max && setCounter(counter + 1)
     }
 
     const handleRestar = () => {
-        counter > max && setCounter(counter - 1)
+        counter > min && setCounter(counter - 1)
     }
 
-    return (
+    const {configRestar, configSumar} = configBtns(counter, max, min, handleRestar, handleSumar)
 
-        <div onClick={click}>
-            <button ClassName="btn btn-outline-primary" onClick={handleRestar}>-</button>
-            <span ClassName="mx-3">{counter}</span>
-            <button ClassName="btn btn-primary" onClick={handleSumar}>+</button>
+    return (
+        <div>
+            <button {...configRestar}>
+                -
+            </button>
+            <span className="mx-3">{counter}</span>
+            <button {...configSumar}>
+                +
+            </button>
         </div>
     )
 }
