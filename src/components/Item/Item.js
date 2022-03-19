@@ -1,30 +1,61 @@
 import { Button, Card } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
-export const Producto = (id, nombre, desc, precio, img, stock) => {
+export const Item = ( {id, nombre, precio, img, desc, oferta} ) => {
+
+    const precioFinal = oferta ? precio * 0.85 : precio
+
     return (
-        <>
-
-
-            <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={img} />
-                <Card.Body>
-                    <Card.Title>${nombre}</Card.Title>
-                    <Card.Text>
-                        ${desc}
-                    </Card.Text>
-                    <Card.Text>
-                        ${precio}
-                    </Card.Text>
-                    <Card.Text>
-                        ${stock}
-                    </Card.Text>
-                    <Link to={`/detail/${id}`}>
-                        <Button variant="primary">Ver más</Button>
-                    </Link>
-
-                </Card.Body>
-            </Card>
-        </>
+        <Card style={{ width: '16rem', margin: '12px' }}>
+            <Card.Img variant="top" src={img} />
+            <Card.Body>
+                <Card.Title>{nombre}</Card.Title>
+                <Card.Text>
+                    {desc}
+                </Card.Text>
+                { oferta &&
+                    <>
+                        <Card.Title>15% OFF</Card.Title>
+                        <Card.Text>Free shipping</Card.Text>
+                    </>
+                }
+                <Card.Text>
+                    Precio: ${precioFinal}
+                </Card.Text>
+                <Link to={`/detail/${id}`}>
+                    <Button variant="primary">Ver más</Button>
+                </Link>
+            </Card.Body>
+        </Card>
     )
 }
+
+
+
+//export const Producto = (id, nombre, desc, precio, img, stock) => {
+//    return (
+//        <>
+//
+//
+//            <Card style={{ width: '18rem' }}>
+//                <Card.Img variant="top" src={img} />
+//                <Card.Body>
+//                    <Card.Title>${nombre}</Card.Title>
+//                    <Card.Text>
+//                        ${desc}
+//                    </Card.Text>
+//                    <Card.Text>
+//                        ${precio}
+//                    </Card.Text>
+//                    <Card.Text>
+//                        ${stock}
+//                    </Card.Text>
+//                    <Link to={`/detail/${id}`}>
+//                        <Button variant="primary">Ver más</Button>
+//                    </Link>
+//
+//                </Card.Body>
+//            </Card>
+//        </>
+//    )
+//}
